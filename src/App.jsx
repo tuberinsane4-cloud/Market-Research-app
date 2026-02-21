@@ -325,7 +325,7 @@ function BulkModal({onImport,onClose}) {
   const TMPL_INLINE="name,age,gender,product,price,qty,wants,buys,problems,notes,date\nRahul Gupta,25,Male,Laptop Pro X1,85000,1,Fast performance,Premium electronics,Battery life,High value client,2025-02-10\nMeera Singh,30,Female,Wireless Earbuds,8500,2,Clear audio,Accessories,Poor mic quality,Repeat buyer,2025-02-11";
   const doDownloadTemplate=()=>{const blob=new Blob([TMPL_INLINE],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="marketpulse_template.csv";a.click();};
   const doParse=()=>{if(!csvText.trim())return;setParsed(parseCsv(csvText));setStep("preview");};
-  const doImport=()=>{if(!parsed||!parsed.results.length)return;onImport(parsed.results);};
+  const doImport=()=>{if(!parsed||!parsed.results.length)return;onImport(parsed.results);onClose();};
   const onFileChange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>setCsvText(ev.target.result);r.readAsText(file);};
 
   const steps=["Format Guide","Input Data","Preview & Import"];
@@ -391,7 +391,7 @@ function BulkModal({onImport,onClose}) {
                         </div>
                         <div style={{padding:"12px 16px",overflowX:"auto",flex:1}}>
                           <div style={{lineHeight:"24px",marginBottom:4,whiteSpace:"nowrap"}}>
-                            {"name,age,gender,product,price,qty,wants,buys,problems,notes,date".split(",").split(",").map((h,i)=>(
+                            {"name,age,gender,product,price,qty,wants,buys,problems,notes,date".split(",").map((h,i)=>(
                               <span key={i}>{i>0&&<span style={{color:"rgba(255,255,255,.18)"}}>,</span>}
                                 <span onMouseEnter={()=>setActiveCol(i)} onMouseLeave={()=>setActiveCol(null)} style={{color:activeCol===i?COL_META[i]?.color||"#fff":"#778AF4",background:activeCol===i?"rgba(119,138,244,.15)":"transparent",padding:"1px 3px",borderRadius:4,cursor:"default",transition:"all .12s",textDecoration:COL_META[i]?.req?"underline":"none",textDecorationColor:"rgba(255,107,138,.5)",textDecorationStyle:"dotted"}} title={COL_META[i]?.rule}>{h}</span>
                               </span>
